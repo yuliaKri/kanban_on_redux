@@ -1,39 +1,35 @@
 import axios from 'axios';
 
 export function cardGetAll(){
-
     return dispatch => axios({
         method: 'GET',
-        url: 'https://nazarov-kanban-server.herokuapp.com/card'
+        url: 'https://kanban-yulia.herokuapp.com/card'
     }).then(res => {
         dispatch({ type: 'CARDS_FILL', payload: res.data })
     });
 }
 
 export function columnsGetAll(){
-
     return dispatch => axios({
         method: 'GET',
-        url: 'https://nazarov-kanban-server.herokuapp.com/column'
+        url: 'https://kanban-yulia.herokuapp.com/columns'//https://nazarov-kanban-server.herokuapp.com/column
     }).then(res => {
         dispatch({ type: 'COLUMNS_FILL', payload: res.data })
     });
 }
 
 export function cardDeleteById(cardId){
-
     return dispatch => axios({
         method: 'DELETE',
-        url: `https://nazarov-kanban-server.herokuapp.com/card/${cardId}`
+        url: `https://kanban-yulia.herokuapp.com/card/${cardId}`
     }).then(() => {
         dispatch(cardGetAll())
     });
 }
 
 export function cardUpdateById(cardId,cardDescription){
-
     return dispatch => axios({
-        url: `https://nazarov-kanban-server.herokuapp.com/card/${cardId}`,
+        url: `https://kanban-yulia.herokuapp.com/card/${cardId}`,
         method: 'PATCH',
         headers: {'Content-Type': 'application/json'},
         data: JSON.stringify({
@@ -52,9 +48,8 @@ export function cardUpdateById(cardId,cardDescription){
 }
 
 export function cardUpdateStatus(cardId,newStatus){
-
     return dispatch => axios({
-        url: `https://nazarov-kanban-server.herokuapp.com/card/${cardId}`,
+        url: `https://kanban-yulia.herokuapp.com/card/${cardId}`,
         method: 'PATCH',
         headers: {'Content-Type': 'application/json'},
         data: JSON.stringify({
@@ -73,9 +68,8 @@ export function cardUpdateStatus(cardId,newStatus){
 }
 
 export function cardUpdatePriority(cardId,newPriority){
-
     return dispatch => axios({
-        url: `https://nazarov-kanban-server.herokuapp.com/card/${cardId}`,
+        url: `https://kanban-yulia.herokuapp.com/card/${cardId}`,
         method: 'PATCH',
         headers: {'Content-Type': 'application/json'},
         data: JSON.stringify({
@@ -94,9 +88,8 @@ export function cardUpdatePriority(cardId,newPriority){
 }
 
 export function createNewCard(cardName,cardDescription,cardPriority,cardStatus){
-
     return dispatch => axios({
-        url: `https://nazarov-kanban-server.herokuapp.com/card/`,
+        url: `https://kanban-yulia.herokuapp.com/card/`,
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         data: JSON.stringify({

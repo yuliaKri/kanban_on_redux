@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {cardDeleteById, cardUpdateById, cardUpdatePriority, cardUpdateStatus, createNewCard} from "./redux/actions";
 import {connect} from "react-redux";
 import ModalWindow from "./ModalWindow";
+import {Button} from "reactstrap";
 
 function Card (props) {
     const [newDescription,setNewDescription] = useState('')
