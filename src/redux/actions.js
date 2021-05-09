@@ -27,6 +27,23 @@ export function cardDeleteById(cardId){
     });
 }
 
+export function MarkCardAsDeleted(cardId){
+    return dispatch => axios({
+        url: `https://kanban-yulia.herokuapp.com/card/${cardId}`,
+        method: 'PATCH',
+        headers: {'Content-Type': 'application/json'},
+        data: JSON.stringify({
+            markedToDelete: Boolean(1)
+        })
+    })  .then(function(body) {
+        console.log(body);
+    })
+        .catch(err => console.log(err))
+        .then(() => {
+            dispatch(cardGetAll())
+        });
+}
+
 export function cardUpdateById(cardId,cardDescription){
     return dispatch => axios({
         url: `https://kanban-yulia.herokuapp.com/card/${cardId}`,
@@ -71,11 +88,11 @@ export function cardUpdatePriority(cardId,newPriority){
     return dispatch => axios({
         url: `https://kanban-yulia.herokuapp.com/card/${cardId}`,
         method: 'PATCH',
-        headers: {'Content-Type': 'application/json'},
+       // headers: {'Content-Type': 'application/json'},
         data: JSON.stringify({
             //name: newName,
             //description: cardDescription,
-            priority: Number(newPriority),
+            priority: Number(newPriority)
            // status: newStatus
         })
     })  .then(function(body) {
@@ -96,7 +113,8 @@ export function createNewCard(cardName,cardDescription,cardPriority,cardStatus){
             name: cardName,
             description: cardDescription,
             priority: Number(cardPriority),
-            status: cardStatus
+            status: cardStatus,
+            markedToDelete: Boolean(0)
         })
     })  .then(function(body) {
         console.log(body);

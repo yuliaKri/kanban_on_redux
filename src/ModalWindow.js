@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import {cardDeleteById, cardUpdateById, createNewCard} from "./redux/actions";
+import {cardDeleteById, cardUpdateById, createNewCard, MarkCardAsDeleted} from "./redux/actions";
 import {connect} from "react-redux";
 
 const ModalWindow = (props) => {
@@ -75,8 +75,11 @@ const ModalWindow = (props) => {
                     {buttonLabel==='Create a new card' && <Button color="primary" onClick={postRequest}>Post the card</Button>}{' '}
                     {buttonLabel==='Update card' && <Button color="primary" onClick={()=>{updateCard(props.id,newDescription);setModal(!modal)}} >Update card</Button>}{' '}
 
-                    {buttonLabel==='Delete card' && <p> Delete this card?</p>}
+                    {buttonLabel==='Delete card' && <p> Deleted this card?</p>}
                     {buttonLabel==='Delete card' && <Button color="primary" onClick={()=>{deleteCard(props.id);setModal(!modal)}} >Yes</Button>}{' '}
+
+                    {buttonLabel==='Mark card as deleted' && <p> Mark this card as deleted?</p>}
+                    {buttonLabel==='Mark card as deleted' && <Button color="primary" onClick={()=>{props.MarkCardAsDeleted(props.id);setModal(!modal)}} >Yes</Button>}{' '}
                     <Button color="secondary" onClick={toggle}>Cancel</Button>
                 </ModalFooter>
             </Modal>
@@ -92,6 +95,7 @@ const mapDispatchToProps = dispatch => ({
     createNewCard: (name,description,priority,status) => dispatch(createNewCard(name,description,priority,status)),
     cardUpdateById: (cardID,cardDescription) => dispatch(cardUpdateById(cardID,cardDescription)),
     cardDeleteById: (id) => dispatch(cardDeleteById(id)),
+    MarkCardAsDeleted: (id) => dispatch(MarkCardAsDeleted(id)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModalWindow);

@@ -79,6 +79,8 @@ function Card (props) {
 
                     <ModalWindow isOpen={modal} toggle={toggle} className={className} buttonLabel="Update card" description={newDescription} id={props.card._id}/>
 
+                    <ModalWindow isOpen={modal} toggle={toggle} className={className} buttonLabel="Mark card as deleted"id={props.card._id}/>
+
                     <ModalWindow isOpen={modal} toggle={toggle} className={className} buttonLabel="Delete card"id={props.card._id}/>
                 </div>
                 <div>
