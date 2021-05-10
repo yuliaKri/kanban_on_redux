@@ -1,8 +1,7 @@
 import React, {useState} from "react";
-import {cardDeleteById, cardUpdateById, cardUpdatePriority, cardUpdateStatus, createNewCard} from "./redux/actions";
+import {cardDeleteById, cardUpdateById, cardUpdatePriority, cardUpdateStatus} from "./redux/actions";
 import {connect} from "react-redux";
 import ModalWindow from "./ModalWindow";
-import {Button} from "reactstrap";
 
 function Card (props) {
     const [newDescription,setNewDescription] = useState('')
@@ -33,16 +32,16 @@ function Card (props) {
         props.cardUpdateStatus(props.card._id, newStatus);
     }
 
-    const changePriority = (oldPriority,value,cardID) => {
+    const changePriority = (oldPriority,value) => {
         let newPriority;
         if (value==='up') newPriority = oldPriority - 1;
         if (value==='down') newPriority = oldPriority + 1;
         props.cardUpdatePriority(props.card._id, newPriority);
     }
 
-    const deleteCard = (id) => {
+    /*const deleteCard = (id) => {
         props.cardDeleteById(id);
-    } /*перенесено на модалку*/
+    } /*moved to ModalWindow component*/
 
     const updateCard = (cardID,newDescription)  => {
         props.cardUpdateById(cardID, newDescription);
@@ -79,9 +78,9 @@ function Card (props) {
 
                     <ModalWindow isOpen={modal} toggle={toggle} className={className} buttonLabel="Update card" description={newDescription} id={props.card._id}/>
 
-                    <ModalWindow isOpen={modal} toggle={toggle} className={className} buttonLabel="Mark card as deleted"id={props.card._id}/>
+                    <ModalWindow isOpen={modal} toggle={toggle} className={className} buttonLabel="Mark card as deleted" id={props.card._id}/>
 
-                    <ModalWindow isOpen={modal} toggle={toggle} className={className} buttonLabel="Delete card"id={props.card._id}/>
+                    <ModalWindow isOpen={modal} toggle={toggle} className={className} buttonLabel="Delete card" id={props.card._id}/>
                 </div>
                 <div>
                  {/*  <ModalWindow isOpen={modal} toggle={toggle} className={className} currentColumn={props.card.status} buttonLabel="Create a new card"/>*/}

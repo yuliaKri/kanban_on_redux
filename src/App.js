@@ -2,8 +2,11 @@ import './App.css';
 import {connect} from "react-redux";
 import {cardGetAll, columnsGetAll} from "./redux/actions";
 import Column from "./Column";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import ModalWindow from "./ModalWindow";
+import {BrowserRouter as Router} from 'react-router-dom';
+import {useRoutes} from "./routes";
+import {Card, CardTitle} from "reactstrap";
 //import {Button} from "reactstrap";
 
 function App(props) {
@@ -12,6 +15,7 @@ function App(props) {
     const cards = props.cards || [];
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
+    const routes = useRoutes(false  );
 
     useEffect(()=>{
         props.columnsGetAll();
@@ -19,16 +23,30 @@ function App(props) {
     },[])
 
     return (
-    <div className="App">
-        <ModalWindow toggle={toggle} buttonLabel="Delete all marked cards"/>
-        <h4>Kanban based on react-redux with own server on mongoDB</h4>
-        <ModalWindow toggle={toggle} buttonLabel="Create a new card"/>
-        <div className="container-sm">
-            <div className="row align-items-start">
-                {columns.map(el=><Column column={el} key={el._id} cards={cards}/>)}
+        <Router>
+            <div className="themed-container">
+                <div className="row align-items-start">
+                    <div className="card" style={{ width: '42rem', height:'11rem'}}>
+                        {routes}
+                    </div>
+                    <div className="card" style={{ width: '42rem', height:'11rem'}}>
+                        <Card body inverse color="primary">
+                            <CardTitle tag="h5">Kanban based on react-redux on own server (mongoDB)</CardTitle><p>{''}</p>
+                            <ModalWindow toggle={toggle} buttonLabel="Trash"/><p>{''}</p>
+                            <ModalWindow toggle={toggle} buttonLabel="Create a new card"/>
+                        </Card>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+
+            <div className="App">
+                <div className="container-sm">
+                    <div className="row align-items-start">
+                        {columns.map(el=><Column column={el} key={el._id} cards={cards}/>)}
+                    </div>
+                </div>
+            </div>
+        </Router>
   );
 }
 

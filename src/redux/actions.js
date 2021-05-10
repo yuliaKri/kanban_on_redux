@@ -27,6 +27,20 @@ export function cardDeleteById(cardId){
     });
 }
 
+export function DeleteSeveralCards(cardsArrayToDelete){
+    console.log(cardsArrayToDelete);
+    const query = { _id: { $in: cardsArrayToDelete} };
+   // for (let i=0;i<cardsArrayToDelete.length;i++){
+        return dispatch => axios({
+            method: 'DELETE',
+            url: `https://kanban-yulia.herokuapp.com/card/${query}`//${cardsArrayToDelete[i]._id}`
+           // data: query
+        }).then(() => {
+            dispatch(cardGetAll())
+        });
+   // }
+}
+
 export function MarkCardAsDeleted(cardId){
     return dispatch => axios({
         url: `https://kanban-yulia.herokuapp.com/card/${cardId}`,
@@ -36,7 +50,7 @@ export function MarkCardAsDeleted(cardId){
             markedToDelete: Boolean(1)
         })
     })  .then(function(body) {
-        console.log(body);
+      //  console.log(body);
     })
         .catch(err => console.log(err))
         .then(() => {
@@ -56,7 +70,7 @@ export function cardUpdateById(cardId,cardDescription){
             //status: newStatus
         })
     })  .then(function(body) {
-        console.log(body);
+      //  console.log(body);
     })
         .catch(err => console.log(err))
         .then(() => {
@@ -76,7 +90,7 @@ export function cardUpdateStatus(cardId,newStatus){
             status: newStatus
         })
     })  .then(function(body) {
-        console.log(body);
+        //console.log(body);
     })
         .catch(err => console.log(err))
         .then(() => {
@@ -123,6 +137,22 @@ export function createNewCard(cardName,cardDescription,cardPriority,cardStatus){
         .then(() => {
             dispatch(cardGetAll())
         });
+
+/*export function userRegister(email,password){
+        return dispatch => axios({
+            url: `https://kanban-yulia.herokuapp.com/user/register`,
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            data: JSON.stringify({
+                email: email,
+                password: password
+            })
+        })  .then(function(body) {
+            console.log(body);
+        })
+            .catch(err => console.log(err))
+            .then(() => {dispatch(cardGetAll())})
+}*/
 
     /*axios({
         method: 'POST',
