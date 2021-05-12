@@ -7,6 +7,8 @@ import ModalWindow from "./ModalWindow";
 import {BrowserRouter as Router} from 'react-router-dom';
 import {useRoutes} from "./routes";
 import {Card, CardTitle} from "reactstrap";
+import {useAuth} from "./hooks/auth.hook";
+import {AuthContext} from "./context/AuthContext";
 //import {Button} from "reactstrap";
 
 function App(props) {
@@ -15,38 +17,44 @@ function App(props) {
     const cards = props.cards || [];
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
-    const routes = useRoutes(false  );
+    const {token, login, logout, userId} = useAuth();
+    const isAuthenticated = !!token;
+    const routes = useRoutes(isAuthenticated);
 
+    console.log("isAuthenticated",isAuthenticated,"/","routes",routes)
+    const currentUser = localStorage.getItem('userData')
+    
     useEffect(()=>{
         props.columnsGetAll();
         props.cardGetAll();
     },[])
 
     return (
-        <Router>
-            <div className="themed-container">
-                <div className="row align-items-start">
-                    <div className="card" style={{ width: '42rem', height:'11rem'}}>
-                        {routes}
-                    </div>
-                    <div className="card" style={{ width: '42rem', height:'11rem'}}>
-                        <Card body inverse color="primary">
-                            <CardTitle tag="h5">Kanban based on react-redux on own server (mongoDB)</CardTitle><p>{''}</p>
-                            <ModalWindow toggle={toggle} buttonLabel="Trash"/><p>{''}</p>
-                            <ModalWindow toggle={toggle} buttonLabel="Create a new card"/>
-                        </Card>
-                    </div>
-                </div>
-            </div>
-
-            <div className="App">
-                <div className="container-sm">
+        <AuthContext.Provider value={{ token, login, logout, userId, isAuthenticated }}>
+            <Router>
+                <div className="themed-container">
                     <div className="row align-items-start">
-                        {columns.map(el=><Column column={el} key={el._id} cards={cards}/>)}
+                        <div className="card" style={{ width: '42rem', height:'11rem'}}>
+                            {routes}
+                        </div>
+                        <div className="card" style={{ width: '42rem', height:'11rem'}}>
+                            <Card body inverse color="primary">
+                                <CardTitle tag="h5">Kanban based on react-redux on own server (mongoDB)</CardTitle><p>{''}</p>
+                                <ModalWindow toggle={toggle} buttonLabel="Trash" /><p>{''}</p>
+                                <ModalWindow toggle={toggle} buttonLabel="Create a new card" />
+                            </Card>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </Router>
+            </Router>
+                <div className="App">
+                    <div className="container-sm">
+                        <div className="row align-items-start">
+                            {columns.map(el=><Column column={el} key={el._id} cards={cards} currentUser={currentUser}/>)}
+                        </div>
+                    </div>
+                </div>
+        </AuthContext.Provider>
   );
 }
 

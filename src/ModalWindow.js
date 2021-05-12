@@ -10,7 +10,7 @@ const ModalWindow = (props) => {
     const [description,setDescription]=useState('');
     const [name,setName]=useState('');
     const [status,setStatus]=useState('');
-    const [priority,setPriority]=useState(1);
+    const [priority,setPriority]=useState('');
 
     const [newDescription,setNewDescription]=useState('');
 
@@ -43,11 +43,11 @@ const ModalWindow = (props) => {
 
     return (
         <div>
-            {buttonLabel==='Delete card' && <Button color="danger" onClick={toggle}>{buttonLabel}</Button>}
-            {buttonLabel==='Trash' && <Button color="warning" onClick={toggle}>{buttonLabel}</Button>}
-            {buttonLabel==='Create a new card' && <Button color="secondary" onClick={toggle}>{buttonLabel}</Button>}
-            {buttonLabel==='Update card' && <Button color="success" onClick={toggle}>{buttonLabel}</Button>}
-            {buttonLabel==='Mark card as deleted' && <Button color="success" onClick={toggle}>{buttonLabel}</Button>}
+            {buttonLabel==='Delete card' && <Button color="danger" onClick={toggle} style={{ width: '11rem'}}>{buttonLabel}</Button>}
+            {buttonLabel==='Trash' && <Button color="warning" onClick={toggle} style={{ width: '11rem'}}>{buttonLabel}</Button>}
+            {buttonLabel==='Create a new card' && <Button color="success" onClick={toggle} style={{ width: '11rem'}}>{buttonLabel}</Button>}
+            {buttonLabel==='Update card' && <Button color="primary" onClick={toggle} style={{ width: '11rem'}}>{buttonLabel}</Button>}
+            {buttonLabel==='Mark card as deleted' && <Button color="warning" onClick={toggle} style={{ width: '11rem'}}>{buttonLabel}</Button>}
             <Modal isOpen={modal} toggle={toggle} className={className}>
                 {/*<ModalHeader toggle={toggle}>FILL OUT: <p>DESCRIPTION, NAME</p><p> STATUS, PRIORITY</p></ModalHeader>*/}
                 <ModalBody>
@@ -59,14 +59,14 @@ const ModalWindow = (props) => {
                     {buttonLabel==='Create a new card' && <input type="text"  placeholder="NAME"  value={name}
                             onChange={(event)=>setName(event.target.value)}/>}
 
-                    {buttonLabel==='Create a new card' &&<select className="form-select-sm" value={props.currentColumn} onChange={(event)=>setStatus(event.target.value)}>
+                    {buttonLabel==='Create a new card' &&<select className="form-select-sm" value={status} onChange={(e)=>setStatus(e.target.value)}>
                         <option selected>STATUS</option>
                         <option value="to do">to do</option>
                         <option value="progress">progress</option>
                         <option value="review">review</option>
                         <option value="done">done</option>
                     </select>}
-                    {buttonLabel==='Create a new card' &&<select className="form-select-sm" value={priority} onChange={(event)=>setPriority(event.target.value)}>
+                    {buttonLabel==='Create a new card' &&<select className="form-select-sm" value={priority} onChange={(e)=>setPriority(e.target.value)}>
                         <option selected>PRIORITY</option>
                         <option value="1">1</option>
                         <option value="2">2</option>

@@ -28,17 +28,13 @@ export function cardDeleteById(cardId){
 }
 
 export function DeleteSeveralCards(cardsArrayToDelete){
-    console.log(cardsArrayToDelete);
-    const query = { _id: { $in: cardsArrayToDelete} };
-   // for (let i=0;i<cardsArrayToDelete.length;i++){
-        return dispatch => axios({
-            method: 'DELETE',
-            url: `https://kanban-yulia.herokuapp.com/card/${query}`//${cardsArrayToDelete[i]._id}`
-           // data: query
-        }).then(() => {
+    return dispatch => cardsArrayToDelete.forEach(el => axios({
+        method: 'DELETE',
+        url: `https://kanban-yulia.herokuapp.com/card/${el._id}`
+    })
+        .then(() => {
             dispatch(cardGetAll())
-        });
-   // }
+        }));
 }
 
 export function MarkCardAsDeleted(cardId){
@@ -49,7 +45,7 @@ export function MarkCardAsDeleted(cardId){
         data: JSON.stringify({
             markedToDelete: Boolean(1)
         })
-    })  .then(function(body) {
+    }).then(function(body) {
       //  console.log(body);
     })
         .catch(err => console.log(err))
@@ -69,7 +65,7 @@ export function cardUpdateById(cardId,cardDescription){
             //priority: Number(newPriority),
             //status: newStatus
         })
-    })  .then(function(body) {
+    }).then(function(body) {
       //  console.log(body);
     })
         .catch(err => console.log(err))
@@ -89,7 +85,7 @@ export function cardUpdateStatus(cardId,newStatus){
             //priority: Number(newPriority),
             status: newStatus
         })
-    })  .then(function(body) {
+    }).then(function(body) {
         //console.log(body);
     })
         .catch(err => console.log(err))
@@ -109,7 +105,7 @@ export function cardUpdatePriority(cardId,newPriority){
             priority: Number(newPriority)
            // status: newStatus
         })
-    })  .then(function(body) {
+    }).then(function(body) {
         console.log(body);
     })
         .catch(err => console.log(err))
@@ -130,7 +126,7 @@ export function createNewCard(cardName,cardDescription,cardPriority,cardStatus){
             status: cardStatus,
             markedToDelete: Boolean(0)
         })
-    })  .then(function(body) {
+    }).then(function(body) {
         console.log(body);
     })
         .catch(err => console.log(err))

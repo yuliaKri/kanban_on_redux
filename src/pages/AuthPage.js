@@ -1,8 +1,28 @@
-import React, {useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Card, Button, CardTitle} from 'reactstrap';
 import axios from "axios";
+import {useCallback} from "react";
+import {AuthContext} from "../context/AuthContext";
 
 function AuthPage() {
+    const auth = useContext(AuthContext)
+    const [error,setError] = useState(null)
+    const clearError = useCallback(()=>setError(null),[])
+
+    const useMessage = () => {
+        return useCallback(text => {
+            if (window.M && text) {
+                window.M.toast({html: text})
+            }
+        },[])
+    }
+    const message = useMessage();
+
+    useEffect(()=>{
+        console.log('Error from useEffect:',error)
+        message(error)
+        clearError()
+    },[error,message,clearError])
 
     const [form, setForm] = useState({
         email:"",
@@ -13,19 +33,33 @@ function AuthPage() {
         setForm({...form,[event.target.name]: event.target.value})
     }
 
-    const registerHandler = (email,password) => {
-      //  тут нужно отправить запрос с методом POST на сервер localhost:5000/user/register или API
+//    const [currentUser, setCurrentUser] = useState('')
+    /*const [email,setEmail] = useState("")
+    const [password,setPassword] = useState("")*/
+
+    const registerHandler = async () => {
         axios({
             method: 'POST',
             url: 'https://kanban-yulia.herokuapp.com/user/register',
             headers: {'Content-Type':'application/json'},
-            data: JSON.stringify({email: email, password: password})
+            data: JSON.stringify({...form}) //{email:email, password:password}
         })
-            .then(function(body){
-                console.log(body);
-                // props.cardAdd({name: name,description: description, priority:Number(priority),status:status});
-            })
-            .catch(error => console.log(error))
+            .then(function(data){console.log(data.request.response);message(data.request.response)})
+            .catch(function (data){console.log(data.request.response);setError(data.request.response)})
+    }
+
+    const loginHandler = () => {
+         axios({
+            method: 'POST',
+            url: 'https://kanban-yulia.herokuapp.com/user/login',
+            headers: {'Content-Type':'application/json'},
+            data: JSON.stringify({...form})
+        })
+            .then(function(data){
+                console.log('data.request.response:',data.request.response);
+                console.log("data: ",data, "data.data.token",data.data.token);
+                auth.login(data.data.token,data.data.userId)})
+            .catch(function (data){console.log(data.request.response);console.log(data)})
     }
 
     return (
@@ -34,11 +68,11 @@ function AuthPage() {
             <div className="card" style={{ width: '42rem', height:'11rem'}}>
                 <Card body inverse color="primary">
                     <CardTitle tag="h5">Authorization</CardTitle>
-                    <input placeholder="email" style={{ width: '21rem'}}/>
-                    <input placeholder="password" style={{ width: '21rem'}}/>
+                    <input placeholder="inter email" name="email" style={{ width: '21rem'}} onChange={changeHandler}/>
+                    <input placeholder="inter password" name="password" type="password" style={{ width: '21rem'}}  onChange={changeHandler} />
                     <table>
-                        <Button color="warning" style={{ width: '10rem', marginRight: 12}} onChange={changeHandler}>Log in</Button>
-                        <Button color="secondary" style={{ width: '10rem'}} onChange={registerHandler}>Sign in</Button>
+                        <Button color="warning" style={{ width: '10rem', marginRight: 12}} onClick={loginHandler}>Log in</Button>
+                        <Button color="secondary" style={{ width: '10rem'}} onClick={registerHandler}>Sign in</Button>
                     </table>
                 </Card>
             </div>

@@ -7,10 +7,6 @@ function Card (props) {
     const [newDescription,setNewDescription] = useState('')
     const [disable,setDisableBar]=useState(false)
 
-    const openUpdateBar = () => {
-        setDisableBar(true)
-    }
-
     const changeStatus = (val) => {
         let newStatus=''
         if (val==='left') {
@@ -75,11 +71,11 @@ function Card (props) {
                     {disable && <input type="text"  placeholder={props.card.description} value={newDescription} onChange={(event)=>setNewDescription(event.target.value)}/>}
                     {disable && <button type="button" className="btn btn-outline-primary" onClick={()=>{setDisableBar(false);updateCard(props.card._id,newDescription)}}>Save</button>}
                     {disable && <button type="button" className="btn btn-outline-primary" onClick={()=>{setDisableBar(false);setNewDescription('')}}>Cancel</button>}
-
+                    <p>{''}</p>
                     <ModalWindow isOpen={modal} toggle={toggle} className={className} buttonLabel="Update card" description={newDescription} id={props.card._id}/>
-
+                    <p>{''}</p>
                     <ModalWindow isOpen={modal} toggle={toggle} className={className} buttonLabel="Mark card as deleted" id={props.card._id}/>
-
+                    <p>{''}</p>
                     <ModalWindow isOpen={modal} toggle={toggle} className={className} buttonLabel="Delete card" id={props.card._id}/>
                 </div>
                 <div>

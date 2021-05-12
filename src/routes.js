@@ -4,7 +4,7 @@ import LinksPage from "./pages/LinksPage";
 import DetailPage from "./pages/DetailPage";
 import CreatePage from "./pages/CreatePage";
 import AuthPage from "./pages/AuthPage";
-/*class Switch extends React.Component {//todo что такоу render и с чем его едят?
+/*class Switch extends React.Component {/!*todo что такое render, promise, callback() from react и с чем это едят?*!/
     render() {
         return null;
     }
