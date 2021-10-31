@@ -11,6 +11,8 @@ const ModalWindow = (props) => {
     const [name,setName]=useState('');
     const [status,setStatus]=useState('');
     const [priority,setPriority]=useState('');
+    const currentUser = localStorage.getItem('userData')
+    const [fileURL,setFileURL]=useState(null)
 
     const [newDescription,setNewDescription]=useState('');
 
@@ -24,7 +26,7 @@ const ModalWindow = (props) => {
     const toggle = () => setModal(!modal);
 
     const postRequest = () => {
-        props.createNewCard(name,description,priority,status);
+        props.createNewCard(name,description,priority,status,currentUser,fileURL);
 
         setDescription('');
         setName('');
@@ -41,15 +43,24 @@ const ModalWindow = (props) => {
         props.cardDeleteById(cardID);
     }
 
+    const handleFileInputChange = (e) =>{
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            setFileURL(reader.result);
+        }
+    }
+
     return (
         <div>
             {buttonLabel==='Delete card' && <Button color="danger" onClick={toggle} style={{ width: '11rem'}}>{buttonLabel}</Button>}
             {buttonLabel==='Trash' && <Button color="warning" onClick={toggle} style={{ width: '11rem'}}>{buttonLabel}</Button>}
-            {buttonLabel==='Create a new card' && <Button color="success" onClick={toggle} style={{ width: '11rem'}}>{buttonLabel}</Button>}
+            {buttonLabel==='Create a new card' && <Button color="success" onClick={toggle} style={{ width: '11rem'}}>+ new card</Button>}
             {buttonLabel==='Update card' && <Button color="primary" onClick={toggle} style={{ width: '11rem'}}>{buttonLabel}</Button>}
             {buttonLabel==='Mark card as deleted' && <Button color="warning" onClick={toggle} style={{ width: '11rem'}}>{buttonLabel}</Button>}
             <Modal isOpen={modal} toggle={toggle} className={className}>
-                {/*<ModalHeader toggle={toggle}>FILL OUT: <p>DESCRIPTION, NAME</p><p> STATUS, PRIORITY</p></ModalHeader>*/}
+                {/*<ModalHeader toggle={toggle}>header here</ModalHeader>*/}
                 <ModalBody>
                     {buttonLabel==='Create a new card' && <input type="text" placeholder="DESCRIPTION" value={description}
                             onChange={(event) => setDescription(event.target.value)}/>}
@@ -76,6 +87,10 @@ const ModalWindow = (props) => {
                     </select>}
 
                     {buttonLabel==='Trash' && props.cards.filter(el => el.markedToDelete===Boolean(1)).map(el => <p>{el._id}</p>)}
+                    <input type='file' name='fileURL' onChange={(event)=>handleFileInputChange(event)}/>
+                    {fileURL && (
+                        <img src={fileURL} alt="chosen" className="previewImg"/>
+                    )}
 
                 </ModalBody>
                 <ModalFooter>
@@ -103,7 +118,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    createNewCard: (name,description,priority,status) => dispatch(createNewCard(name,description,priority,status)),
+    createNewCard: (name,description,priority,status,user,fileURL) => dispatch(createNewCard(name,description,priority,status,user,fileURL)),
     cardUpdateById: (cardID,cardDescription) => dispatch(cardUpdateById(cardID,cardDescription)),
     cardDeleteById: (id) => dispatch(cardDeleteById(id)),
     MarkCardAsDeleted: (id) => dispatch(MarkCardAsDeleted(id)),

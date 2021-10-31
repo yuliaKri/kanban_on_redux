@@ -17,7 +17,7 @@ function AuthPage() {
         },[])
     }
     const message = useMessage();
-
+//todo cloudinary добаить картинки в карточки: прописать путь к cloudinary
     useEffect(()=>{
         console.log('Error from useEffect:',error)
         message(error)
@@ -44,8 +44,10 @@ function AuthPage() {
             headers: {'Content-Type':'application/json'},
             data: JSON.stringify({...form}) //{email:email, password:password}
         })
-            .then(function(data){console.log(data.request.response);message(data.request.response)})
-            .catch(function (data){console.log(data.request.response);setError(data.request.response)})
+            .then(function(data){console.log(data.request.response);message(JSON.parse(data.request.response)['message'])})
+            .catch(function (data){console.log(JSON.parse(data.request.response)['errors'][0]['msg']);setError(JSON.parse(data.request.response)['message']);message(JSON.parse(data.request.response)['message'])})
+
+        setForm({email:"",password: ""})
     }
 
     const loginHandler = () => {
@@ -72,7 +74,7 @@ function AuthPage() {
                     <input placeholder="inter password" name="password" type="password" style={{ width: '21rem'}}  onChange={changeHandler} />
                     <table>
                         <Button color="warning" style={{ width: '10rem', marginRight: 12}} onClick={loginHandler}>Log in</Button>
-                        <Button color="secondary" style={{ width: '10rem'}} onClick={registerHandler}>Sign in</Button>
+                        <Button color="secondary" style={{ width: '10rem'}} onClick={registerHandler}>Sign-up</Button>
                     </table>
                 </Card>
             </div>

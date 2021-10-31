@@ -61,12 +61,10 @@ export function cardUpdateById(cardId,cardDescription){
         headers: {'Content-Type': 'application/json'},
         data: JSON.stringify({
             //name: newName,
-            description: cardDescription,
-            //priority: Number(newPriority),
-            //status: newStatus
+            description: cardDescription
         })
     }).then(function(body) {
-      //  console.log(body);
+        console.log(body);
     })
         .catch(err => console.log(err))
         .then(() => {
@@ -80,9 +78,6 @@ export function cardUpdateStatus(cardId,newStatus){
         method: 'PATCH',
         headers: {'Content-Type': 'application/json'},
         data: JSON.stringify({
-            //name: newName,
-            //description: cardDescription,
-            //priority: Number(newPriority),
             status: newStatus
         })
     }).then(function(body) {
@@ -98,15 +93,12 @@ export function cardUpdatePriority(cardId,newPriority){
     return dispatch => axios({
         url: `https://kanban-yulia.herokuapp.com/card/${cardId}`,
         method: 'PATCH',
-       // headers: {'Content-Type': 'application/json'},
+        headers: {'Content-Type': 'application/json'},
         data: JSON.stringify({
-            //name: newName,
-            //description: cardDescription,
-            priority: Number(newPriority)
-           // status: newStatus
+            priority: newPriority
         })
     }).then(function(body) {
-        console.log(body);
+        //console.log(body);
     })
         .catch(err => console.log(err))
         .then(() => {
@@ -114,7 +106,26 @@ export function cardUpdatePriority(cardId,newPriority){
         });
 }
 
-export function createNewCard(cardName,cardDescription,cardPriority,cardStatus){
+export function cardUpdateImageURL(cardId,imageURL){
+    console.log(imageURL)
+    return dispatch => axios({
+        url: `https://kanban-yulia.herokuapp.com/card/${cardId}`,
+        method: 'PATCH',
+        headers: {'Content-Type': 'application/json'},
+        data: JSON.stringify({
+            imageURL: imageURL
+        })
+    }).then(function(body) {
+        //console.log(body);
+    })
+        .catch(err => console.log(err))
+        .then(() => {
+            dispatch(cardGetAll())
+        });
+}
+
+export function createNewCard(cardName,cardDescription,cardPriority,cardStatus,fileURL){
+    console.log(new Date())
     return dispatch => axios({
         url: `https://kanban-yulia.herokuapp.com/card/`,
         method: 'POST',
@@ -124,7 +135,9 @@ export function createNewCard(cardName,cardDescription,cardPriority,cardStatus){
             description: cardDescription,
             priority: Number(cardPriority),
             status: cardStatus,
-            markedToDelete: Boolean(0)
+            markedToDelete: Boolean(0),
+            imageURL: fileURL,
+            createdAt: new Date(),
         })
     }).then(function(body) {
         console.log(body);

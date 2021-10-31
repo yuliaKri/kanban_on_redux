@@ -1,11 +1,12 @@
 import React, {useState} from "react";
-import {cardDeleteById, cardUpdateById, cardUpdatePriority, cardUpdateStatus} from "./redux/actions";
+import {cardDeleteById, cardUpdateById, cardUpdatePriority, cardUpdateStatus, cardUpdateImageURL} from "./redux/actions";
 import {connect} from "react-redux";
 import ModalWindow from "./ModalWindow";
 
 function Card (props) {
     const [newDescription,setNewDescription] = useState('')
     const [disable,setDisableBar]=useState(false)
+   // const [fileURL,setFileURL]=useState(null)
 
     const changeStatus = (val) => {
         let newStatus=''
@@ -51,11 +52,14 @@ function Card (props) {
 
     const toggle = () => setModal(!modal);
 
+
+
     return (
         <div>
             <div className="card">
                 <div className="card-body">
                     <h5 className="card-title">{props.card.name}</h5>
+                    <img src={props.card.imageURL} />
                     <p className="card-text">{props.card.description}</p>
                 </div>
                 <ul className="list-group list-group-flush">
@@ -71,6 +75,8 @@ function Card (props) {
                     {disable && <input type="text"  placeholder={props.card.description} value={newDescription} onChange={(event)=>setNewDescription(event.target.value)}/>}
                     {disable && <button type="button" className="btn btn-outline-primary" onClick={()=>{setDisableBar(false);updateCard(props.card._id,newDescription)}}>Save</button>}
                     {disable && <button type="button" className="btn btn-outline-primary" onClick={()=>{setDisableBar(false);setNewDescription('')}}>Cancel</button>}
+                    {/*<button type="button" className="btn btn-outline-primary" onClick={()=>{props.cardUpdateImageURL(props.card._id,fileURL)}}>Add picture url to this card</button>*/}
+                   {/* <input type='text' name='fileURL' onChange={(event)=>setFileURL(event.target.value)}/>*/}
                     <p>{''}</p>
                     <ModalWindow isOpen={modal} toggle={toggle} className={className} buttonLabel="Update card" description={newDescription} id={props.card._id}/>
                     <p>{''}</p>
@@ -96,5 +102,6 @@ const mapDispatchToProps = dispatch => ({
     cardUpdateById: (cardID,cardDescription) => dispatch(cardUpdateById(cardID,cardDescription)),
     cardUpdateStatus: (cardID,newStatus) => dispatch(cardUpdateStatus(cardID,newStatus)),
     cardUpdatePriority: (cardID,newStatus) => dispatch(cardUpdatePriority(cardID,newStatus)),
+   // cardUpdateImageURL: (cardID,newImageURL) => dispatch(cardUpdateImageURL(cardID,newImageURL)),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Card);

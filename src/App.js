@@ -9,6 +9,7 @@ import {useRoutes} from "./routes";
 import {Card, CardTitle} from "reactstrap";
 import {useAuth} from "./hooks/auth.hook";
 import {AuthContext} from "./context/AuthContext";
+import Header from "./Header";
 //import {Button} from "reactstrap";
 
 function App(props) {
@@ -32,6 +33,7 @@ function App(props) {
     return (
         <AuthContext.Provider value={{ token, login, logout, userId, isAuthenticated }}>
             <Router>
+                <Header />
                 <div className="themed-container">
                     <div className="row align-items-start">
                         <div className="card" style={{ width: '42rem', height:'11rem'}}>
@@ -39,7 +41,6 @@ function App(props) {
                         </div>
                         <div className="card" style={{ width: '42rem', height:'11rem'}}>
                             <Card body inverse color="primary">
-                                <CardTitle tag="h5">Kanban based on react-redux on own server (mongoDB)</CardTitle><p>{''}</p>
                                 <ModalWindow toggle={toggle} buttonLabel="Trash" /><p>{''}</p>
                                 <ModalWindow toggle={toggle} buttonLabel="Create a new card" />
                             </Card>
